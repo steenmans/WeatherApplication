@@ -1,4 +1,4 @@
-# WeatherApplication STILL IN PROGRESS
+# Weather Application STILL IN PROGRESS
 Making a weather application
 using https://www.weatherapi.com/ as the weather data driver.
 
