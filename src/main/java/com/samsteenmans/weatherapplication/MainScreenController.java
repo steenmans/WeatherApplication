@@ -1,6 +1,7 @@
 package com.samsteenmans.weatherapplication;
 
 import com.samsteenmans.weatherapplication.data.Data;
+import com.samsteenmans.weatherapplication.data.autocomplete.AutoCompleteLocations;
 import com.samsteenmans.weatherapplication.weatherData.WeatherData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,6 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.textfield.TextFields;
+
+import java.util.List;
 
 public class MainScreenController {
     /* *** --------- ***
@@ -120,26 +124,38 @@ public class MainScreenController {
     @FXML // fx:id="thirdBlockVBox"
     private VBox thirdBlockVBox; // Value injected by FXMLLoader
 
-    // TEST main
-    public static void main(String[] args) {
-        WeatherData weatherData = new WeatherData();
-        Data data = new Data();
-    }
 
     public void initialize(){
         WeatherData weatherData = new WeatherData();
         Data data = new Data();
         weatherData.setMeasurements(data.getCompleteWeatherData("duffel",5));
 
+
         // Add a listener to the Search textField for giving autocomplete
         textFieldSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                // TODO in autoComplete textField steken via controlsFX
-                data.getAutocomplete(newValue);
+                // TODO Verder uitwerken,werkt eindelijk
+                if(!newValue.isEmpty()){    // Check if empty
+                    List<AutoCompleteLocations> autoCompleteLocationsList = data.getAutocomplete(newValue);
+
+                    String[] test = new String[autoCompleteLocationsList.size()];
+
+                    for (int i = 0; i <autoCompleteLocationsList.size() ; i++) {
+                        AutoCompleteLocations autoCompleteLocationsTemp = autoCompleteLocationsList.get(i);
+                        test[i] = autoCompleteLocationsTemp.getName();
+                    }
+
+                    TextFields.bindAutoCompletion(textFieldSearch,test);
+                }
             }
         });
+
+
+
     }
+
+
 
 
 
