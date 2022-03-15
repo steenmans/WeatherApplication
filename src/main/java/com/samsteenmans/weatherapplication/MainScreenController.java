@@ -135,6 +135,7 @@ public class MainScreenController {
         textFieldSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                // TODO in autoComplete textField steken via controlsFX
                 data.getAutocomplete(newValue);
             }
         });
