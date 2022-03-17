@@ -54,5 +54,6 @@ public class WeatherData implements Subject {
     public void setMeasurements(CompleteWeatherData completeWeatherData){
         this.completeWeatherData = completeWeatherData;
         measurementsChanged();
+        System.out.println("WeatherData.setMeasurements");
     }
 }

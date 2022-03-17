@@ -1,15 +1,15 @@
 package com.samsteenmans.weatherapplication;
 
+import com.samsteenmans.weatherapplication.data.CompleteWeatherData;
 import com.samsteenmans.weatherapplication.data.Data;
 import com.samsteenmans.weatherapplication.data.autocomplete.AutoCompleteLocations;
 import com.samsteenmans.weatherapplication.weatherData.WeatherData;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -124,7 +124,7 @@ public class MainScreenController {
     @FXML // fx:id="thirdBlockVBox"
     private VBox thirdBlockVBox; // Value injected by FXMLLoader
 
-
+    // Initialize
     public void initialize(){
         WeatherData weatherData = new WeatherData();
         Data data = new Data();
@@ -132,26 +132,31 @@ public class MainScreenController {
 
 
         // Add a listener to the Search textField for giving autocomplete
-        textFieldSearch.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                // TODO Verder uitwerken,werkt eindelijk
-                if(!newValue.isEmpty()){    // Check if empty
-                    List<AutoCompleteLocations> autoCompleteLocationsList = data.getAutocomplete(newValue);
+        textFieldSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            // TODO Verder uitwerken,werkt eindelijk
+            if(!newValue.isEmpty()){    // Check if empty
+                List<AutoCompleteLocations> autoCompleteLocationsList = data.getAutocomplete(newValue);
 
-                    String[] test = new String[autoCompleteLocationsList.size()];
+                String[] test = new String[autoCompleteLocationsList.size()];
 
-                    for (int i = 0; i <autoCompleteLocationsList.size() ; i++) {
-                        AutoCompleteLocations autoCompleteLocationsTemp = autoCompleteLocationsList.get(i);
-                        test[i] = autoCompleteLocationsTemp.getName();
-                    }
-
-                    TextFields.bindAutoCompletion(textFieldSearch,test);
+                for (int i = 0; i <autoCompleteLocationsList.size() ; i++) {
+                    AutoCompleteLocations autoCompleteLocationsTemp = autoCompleteLocationsList.get(i);
+                    test[i] = autoCompleteLocationsTemp.getName();
                 }
+                TextFields.bindAutoCompletion(textFieldSearch,test);
             }
         });
 
+        // Listener if entered is pressed in the textField
+        textFieldSearch.setOnKeyPressed( event -> {
+            if( event.getCode() == KeyCode.ENTER ) {
+                weatherData.setMeasurements(data.getCompleteWeatherData(textFieldSearch.getText(),5));
+            }
+        } );
+    }
 
+    // Change the fxml data with CompleteData TODO
+    public void setFxmlData(CompleteWeatherData completeWeatherData){
 
     }
 

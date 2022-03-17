@@ -13,18 +13,20 @@ public class Current implements DisplayElement {
     // Pressure + humidity
     private double pressure_mb; // Millibar
     private double humidity;
-    // Condition text
-    private String condition;
+    // Condition
+    private String conditionText; // Text
+    private long conditionCode; // Code
 
     // Constructor
-    public Current(double temp_c, double temp_f, double wind_kph, String wind_dir, double pressure_mb, double humidity, String condition) {
+    public Current(double temp_c, double temp_f, double wind_kph, String wind_dir, double pressure_mb, double humidity, String condition,long conditionCode) {
         this.temp_c = temp_c;
         this.temp_f = temp_f;
         this.wind_kph = wind_kph;
         this.wind_dir = wind_dir;
         this.pressure_mb = pressure_mb;
         this.humidity = humidity;
-        this.condition = condition;
+        this.conditionText = condition;
+        this.conditionCode = conditionCode;
     }
 
     // To String
@@ -37,7 +39,7 @@ public class Current implements DisplayElement {
                 ", wind_dir='" + wind_dir + '\'' +
                 ", pressure_mb=" + pressure_mb +
                 ", humidity=" + humidity +
-                ", condition='" + condition + '\'' +
+                ", condition='" + conditionText + '\'' +
                 '}';
     }
 
@@ -96,13 +98,19 @@ public class Current implements DisplayElement {
         this.humidity = humidity;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getConditionText() {
+        return conditionText;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setConditionText(String conditionText) {
+        this.conditionText = conditionText;
     }
 
+    public long getConditionCode() {
+        return conditionCode;
+    }
 
+    public void setConditionCode(long conditionCode) {
+        this.conditionCode = conditionCode;
+    }
 }

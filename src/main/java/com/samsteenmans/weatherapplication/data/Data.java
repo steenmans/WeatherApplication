@@ -70,10 +70,11 @@ public class Data {
 
         // Get the condition object from current object
         JSONObject jsonObjectCondition = json.jsonObjectFromJsonObject(jsonObjectCurrent,"condition");
-        String currentCondition = (String) jsonObjectCondition.get("text");
+        String currentConditionText = (String) jsonObjectCondition.get("text");
+        Long currentConditionCode = (Long) jsonObjectCondition.get("code");
 
         // Create current
-        current = new Current(currentTemp_c,currentTemp_f,currentWind_kph,currentWind_dir,currentPressure_mb,currentHumidity,currentCondition);
+        current = new Current(currentTemp_c,currentTemp_f,currentWind_kph,currentWind_dir,currentPressure_mb,currentHumidity,currentConditionText,currentConditionCode);
         System.out.println(current);
 
         /*** Get data from ForecastDay ***/
