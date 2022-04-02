@@ -39,18 +39,17 @@ public class Data {
         //Lists
         List<ForecastDay> forecastDayList = new ArrayList<>();
 
-
-
+        /*** Request ***/
         // Send the request through the api and return a String
-        String response = get.sendRequest(createRequest.weatherData(cityName,numberOfDays));
+        String response = get.sendRequest(createRequest.weatherData(cityName, numberOfDays));
 
         // Make a Json object from the Response String
         JSONObject jsonObjectResponse = json.jsonObjectFromString(response);
 
         // Take the object "location","current","forecast" from the object jsonObjectResponse
-        JSONObject jsonObjectLocation = json.jsonObjectFromJsonObject(jsonObjectResponse,"location");
-        JSONObject jsonObjectCurrent = json.jsonObjectFromJsonObject(jsonObjectResponse,"current");
-        JSONObject jsonObjectForecast = json.jsonObjectFromJsonObject(jsonObjectResponse,"forecast");
+        JSONObject jsonObjectLocation = json.jsonObjectFromJsonObject(jsonObjectResponse, "location");
+        JSONObject jsonObjectCurrent = json.jsonObjectFromJsonObject(jsonObjectResponse, "current");
+        JSONObject jsonObjectForecast = json.jsonObjectFromJsonObject(jsonObjectResponse, "forecast");
 
 
         /*** Location ***/
@@ -58,7 +57,7 @@ public class Data {
         String country = (String) jsonObjectLocation.get("country");
         String localTime = (String) jsonObjectLocation.get("localtime");
         // Create location
-        location = new Location(name,country,localTime);
+        location = new Location(name, country, localTime);
 
         /*** Current ***/
         double currentTemp_c = Double.parseDouble(jsonObjectCurrent.get("temp_c").toString());
@@ -69,17 +68,17 @@ public class Data {
         double currentHumidity = Double.parseDouble(jsonObjectCurrent.get("humidity").toString());
 
         // Get the condition object from current object
-        JSONObject jsonObjectCondition = json.jsonObjectFromJsonObject(jsonObjectCurrent,"condition");
+        JSONObject jsonObjectCondition = json.jsonObjectFromJsonObject(jsonObjectCurrent, "condition");
         String currentConditionText = (String) jsonObjectCondition.get("text");
         Long currentConditionCode = (Long) jsonObjectCondition.get("code");
 
         // Create current
-        current = new Current(currentTemp_c,currentTemp_f,currentWind_kph,currentWind_dir,currentPressure_mb,currentHumidity,currentConditionText,currentConditionCode);
+        current = new Current(currentTemp_c, currentTemp_f, currentWind_kph, currentWind_dir, currentPressure_mb, currentHumidity, currentConditionText, currentConditionCode);
         System.out.println(current);
 
         /*** Get data from ForecastDay ***/
         // Get the jsonArray "forecastday" from the object jsonObjectForecast
-        JSONArray jsonArrayForecastday = json.jsonArrayFromJsonObject(jsonObjectForecast,"forecastday");
+        JSONArray jsonArrayForecastday = json.jsonArrayFromJsonObject(jsonObjectForecast, "forecastday");
 
         // Go through the jsonArray "forecastday"
         // Go trough every day
@@ -128,10 +127,11 @@ public class Data {
             // Weather condition text
             // Get object condition
             JSONObject jsonObjectDayCondition = (JSONObject) jsonObjectDay.get("condition");
-            String dayCondition = (String) jsonObjectDayCondition.get("text");
+            String conditionText = (String) jsonObjectDayCondition.get("text");
+            Long conditionCode = (Long) jsonObjectDayCondition.get("code");
             // Create Day
-            day = new Day(maxTemp_c,minTemp_c,avgTemp_c,maxTemp_f,minTemp_f,avgTemp_f,maxWind_kph,maxWind_mph,
-                    avgHumidity,dailyChanceOfRain,dayCondition);
+            day = new Day(maxTemp_c, minTemp_c, avgTemp_c, maxTemp_f, minTemp_f, avgTemp_f, maxWind_kph, maxWind_mph,
+                    avgHumidity, dailyChanceOfRain, conditionText, conditionCode);
 
 
             /*** Get data from astro ***/
@@ -142,7 +142,7 @@ public class Data {
             String moonrise = (String) jsonObjectAstro.get("moonrise");
             String moonset = (String) jsonObjectAstro.get("moonset");
             // Create Astro
-            astro = new Astro(sunrise,sunset,moonrise,moonset);
+            astro = new Astro(sunrise, sunset, moonrise, moonset);
 
 
             /*** Get data from hour ***/
@@ -166,30 +166,30 @@ public class Data {
                 String hourWindDirection = (String) jsonObjectHourCondition.get("wind_dir");
                 // Pressure and humidity
                 double hourPressure_mb = Double.parseDouble(jsonObjectHour.get("pressure_mb").toString());
-                int hourHumidity= Integer.parseInt(jsonObjectHour.get("humidity").toString());
+                int hourHumidity = Integer.parseInt(jsonObjectHour.get("humidity").toString());
                 // Changes of forecasts
-                int hourChangeOfRain= Integer.parseInt(jsonObjectHour.get("chance_of_rain").toString());
+                int hourChangeOfRain = Integer.parseInt(jsonObjectHour.get("chance_of_rain").toString());
 
                 // Create hour object
-                Hour hour = new Hour(time,hourTemp_c,hourTemp_f,hourCondition,hourWind_kph,
-                        hourWind_mph,hourWindDegree,hourWindDirection,hourPressure_mb,hourHumidity,hourChangeOfRain);
+                Hour hour = new Hour(time, hourTemp_c, hourTemp_f, hourCondition, hourWind_kph,
+                        hourWind_mph, hourWindDegree, hourWindDirection, hourPressure_mb, hourHumidity, hourChangeOfRain);
                 // Add to the list
                 hourList.add(hour);
             }
 
 
             /*** Add to the list of forecastDay ***/
-            forecastDayList.add(new ForecastDay(date,day,astro,hourList));
+            forecastDayList.add(new ForecastDay(date, day, astro, hourList));
         }
 
         /*** Send everything back so Weather data can update ***/
-        completeWeatherData = new CompleteWeatherData(location,current,forecastDayList);
+        completeWeatherData = new CompleteWeatherData(location, current, forecastDayList);
         return completeWeatherData;
     }
 
     // TODO check the http code, 200 is valid
     // Get the autocomplete data, return as a String[]
-    public List<AutoCompleteLocations> getAutocomplete(String cityName){
+    public List<AutoCompleteLocations> getAutocomplete(String cityName) {
         /*** Variables ***/
         // Request
         CreateRequest createRequest = new CreateRequest();
@@ -221,7 +221,7 @@ public class Data {
             String url = (String) jsonObject.get("url");
 
             // Create AutoCompleteLocations
-            AutoCompleteLocations autoCompleteLocations = new AutoCompleteLocations(id,name,region,country,lat,lon,url);
+            AutoCompleteLocations autoCompleteLocations = new AutoCompleteLocations(id, name, region, country, lat, lon, url);
 
             System.out.println(autoCompleteLocations);
 

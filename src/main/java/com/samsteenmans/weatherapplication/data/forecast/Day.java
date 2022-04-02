@@ -22,10 +22,11 @@ public class Day implements DisplayElement {
     // Changes of forecasts
     private int dailyChanceOfRain;
     // Weather condition text
-    private String condition;
+    private String conditionText; // Text
+    private long conditionCode; // Code
 
     /*** Constructor ***/
-    public Day(double maxTemp_c, double minTemp_c, double avgTemp_c, double maxTemp_f, double minTemp_f, double avgTemp_f, double maxWind_kph, double maxWind_mph, double avgHumidity, int dailyChanceOfRain, String condition) {
+    public Day(double maxTemp_c, double minTemp_c, double avgTemp_c, double maxTemp_f, double minTemp_f, double avgTemp_f, double maxWind_kph, double maxWind_mph, double avgHumidity, int dailyChanceOfRain, String conditionText,long conditionCode) {
         this.maxTemp_c = maxTemp_c;
         this.minTemp_c = minTemp_c;
         this.avgTemp_c = avgTemp_c;
@@ -36,7 +37,8 @@ public class Day implements DisplayElement {
         this.maxWind_mph = maxWind_mph;
         this.avgHumidity = avgHumidity;
         this.dailyChanceOfRain = dailyChanceOfRain;
-        this.condition = condition;
+        this.conditionText = conditionText;
+        this.conditionCode = conditionCode;
     }
 
     /*** Getters and Setters ***/
@@ -120,12 +122,21 @@ public class Day implements DisplayElement {
         this.dailyChanceOfRain = dailyChanceOfRain;
     }
 
-    public String getCondition() {
-        return condition;
+
+    public String getConditionText() {
+        return conditionText;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setConditionText(String conditionText) {
+        this.conditionText = conditionText;
+    }
+
+    public long getConditionCode() {
+        return conditionCode;
+    }
+
+    public void setConditionCode(long conditionCode) {
+        this.conditionCode = conditionCode;
     }
 
     /*** toString ***/
@@ -142,7 +153,8 @@ public class Day implements DisplayElement {
                 ", maxWind_mph=" + maxWind_mph +
                 ", avgHumidity=" + avgHumidity +
                 ", dailyChanceOfRain=" + dailyChanceOfRain +
-                ", condition='" + condition + '\'' +
+                ", conditionText='" + conditionText + '\'' +
+                ", conditionCode=" + conditionCode +
                 '}';
     }
 

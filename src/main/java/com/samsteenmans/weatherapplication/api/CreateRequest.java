@@ -16,18 +16,13 @@ public class CreateRequest {
         // Nothing
     }
 
-    // Formbody for get 1 day of weather
-
-
-
-
-    // Formbody for getting 5 days of weather
-    public Request weatherData(String placeName, int numberOfDays){
+    // Formbody for getting number days of weather
+    public Request weatherData(String placeName, int numberOfDays) {
         // Creating the formbody
         RequestBody formBody = new FormBody.Builder()
                 .add("key", apiKey)
                 .add("q", placeName)
-                .add("days",numberOfDays + "")
+                .add("days", numberOfDays + "")
                 .add("aqi", "no")
                 .add("alerts", "no")
                 .build();
@@ -41,7 +36,7 @@ public class CreateRequest {
         return request;
     }
 
-    public Request autocomplete(String placeName){
+    public Request autocomplete(String placeName) {
         // Creating the formbody
         RequestBody formBody = new FormBody.Builder()
                 .add("key", apiKey)

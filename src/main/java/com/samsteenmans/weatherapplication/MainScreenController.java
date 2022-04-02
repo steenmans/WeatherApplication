@@ -6,8 +6,6 @@ import com.samsteenmans.weatherapplication.data.Data;
 import com.samsteenmans.weatherapplication.data.autocomplete.AutoCompleteLocations;
 import com.samsteenmans.weatherapplication.data.current.Current;
 import com.samsteenmans.weatherapplication.data.forecast.ForecastDay;
-import com.samsteenmans.weatherapplication.weatherData.WeatherData;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.control.Label;
@@ -27,9 +25,6 @@ public class MainScreenController {
     // *** --------- ***/
     @FXML // fx:id="textFieldSearch"
     private TextField textFieldSearch; // Value injected by FXMLLoader
-
-    @FXML // fx:id="areaChart"
-    private AreaChart<?, ?> areaChart; // Value injected by FXMLLoader
 
     @FXML // fx:id="currentConditionImageViewIcon"
     private ImageView currentConditionImageViewIcon; // Value injected by FXMLLoader
@@ -52,6 +47,9 @@ public class MainScreenController {
     @FXML // fx:id="blockVBox1"
     private VBox blockVBox1; // Value injected by FXMLLoader
 
+    @FXML // fx:id="LabelDay1"
+    private Label labelDay1; // Value injected by FXMLLoader
+
     @FXML // fx:id="imageViewIcon1"
     private ImageView imageViewIcon1; // Value injected by FXMLLoader
 
@@ -67,8 +65,8 @@ public class MainScreenController {
     @FXML // fx:id="secondBlockVBox"
     private VBox secondBlockVBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="secondBlockLabelDay"
-    private Label secondBlockLabelDay; // Value injected by FXMLLoader
+    @FXML // fx:id="LabelDay2"
+    private Label labelDay2; // Value injected by FXMLLoader
 
     @FXML // fx:id="imageViewIcon2"
     private ImageView imageViewIcon2; // Value injected by FXMLLoader
@@ -85,8 +83,8 @@ public class MainScreenController {
     @FXML // fx:id="thirdBlockVBox"
     private VBox thirdBlockVBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="thirdBlockLabelDay"
-    private Label thirdBlockLabelDay; // Value injected by FXMLLoader
+    @FXML // fx:id="LabelDay3"
+    private Label labelDay3; // Value injected by FXMLLoader
 
     @FXML // fx:id="imageViewIcon3"
     private ImageView imageViewIcon3; // Value injected by FXMLLoader
@@ -100,8 +98,8 @@ public class MainScreenController {
     @FXML // fx:id="labelMinTemperature3"
     private Label labelMinTemperature3; // Value injected by FXMLLoader
 
-    @FXML // fx:id="blockLabelDay4"
-    private Label blockLabelDay4; // Value injected by FXMLLoader
+    @FXML // fx:id="LabelDay4"
+    private Label labelDay4; // Value injected by FXMLLoader
 
     @FXML // fx:id="imageViewIcon4"
     private ImageView imageViewIcon4; // Value injected by FXMLLoader
@@ -130,38 +128,42 @@ public class MainScreenController {
     @FXML // fx:id="labelMinTemperature5"
     private Label labelMinTemperature5; // Value injected by FXMLLoader
 
+    @FXML // fx:id="areaChart"
+    private AreaChart<?, ?> areaChart; // Value injected by FXMLLoader
 
 
     /* *** --------- ***
     // *** Initialize ***
     // *** --------- ***/
-    public void initialize(){
-        WeatherData weatherData = new WeatherData();
+    public void initialize() {
+        // Variables
         Data data = new Data();
 
 
         // Add a listener to the Search textField for giving autocomplete
         textFieldSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            // TODO Verder uitwerken,werkt eindelijk
-            if(!newValue.isEmpty()){    // Check if empty
+            if (!newValue.isEmpty()) {    // Check if empty
+                // Get the AutoComplete results
                 List<AutoCompleteLocations> autoCompleteLocationsList = data.getAutocomplete(newValue);
+                String[] autocompleteStringList = new String[autoCompleteLocationsList.size()];
 
-                String[] test = new String[autoCompleteLocationsList.size()];
-
-                for (int i = 0; i <autoCompleteLocationsList.size() ; i++) {
+                // Loop through the autocomplete results
+                for (int i = 0; i < autoCompleteLocationsList.size(); i++) {
                     AutoCompleteLocations autoCompleteLocationsTemp = autoCompleteLocationsList.get(i);
-                    test[i] = autoCompleteLocationsTemp.getName();
+                    autocompleteStringList[i] = autoCompleteLocationsTemp.getName();
                 }
-                TextFields.bindAutoCompletion(textFieldSearch,test);
+
+                // Bind it to the textField
+                TextFields.bindAutoCompletion(textFieldSearch, autocompleteStringList);
             }
         });
 
         // Listener if entered is pressed in the textField
-        textFieldSearch.setOnKeyPressed( event -> {
-            if( event.getCode() == KeyCode.ENTER ) {
-                setFxmlData(data.getCompleteWeatherData(textFieldSearch.getText(),5));
+        textFieldSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                setFxmlData(data.getCompleteWeatherData(textFieldSearch.getText(), 5));
             }
-        } );
+        });
     }
 
 
@@ -170,14 +172,25 @@ public class MainScreenController {
     // *** --------- ***/
 
     // Change the fxml data with CompleteData
-    public void setFxmlData(CompleteWeatherData completeWeatherData){
-        // Current Day
-        changeCurrentGui(completeWeatherData.getCurrent());
-        changeDayGui(completeWeatherData.getForecastDayList().get(0),0);
+    public void setFxmlData(CompleteWeatherData completeWeatherData) {
+        // Current Conditions
+        changeCurrentConditionsGui(completeWeatherData.getCurrent());
+        // Today day 1
+        changeTodayDay1(completeWeatherData.getForecastDayList().get(0));
+        // Day 2
+        changeTodayDay2(completeWeatherData.getForecastDayList().get(1));
+        // Day 3
+        changeTodayDay3(completeWeatherData.getForecastDayList().get(2));
+        // Day 4
+        //changeTodayDay4(completeWeatherData.getForecastDayList().get(3));
+        // Day 5
+        //changeTodayDay5(completeWeatherData.getForecastDayList().get(4));
+
+
     }
 
-    // Change Current
-    public void changeCurrentGui(Current current){
+    // Change Current Conditions
+    public void changeCurrentConditionsGui(Current current) {
         // Current Day
         currentConditionLabelTemperature.setText(String.valueOf(current.getTemp_c())); // Current Temp
         currentConditionLabelPressure.setText(String.valueOf(current.getPressure_mb())); // Current pressure
@@ -191,15 +204,139 @@ public class MainScreenController {
             File file = new File(url);
             Image image = new Image(file.toURI().toString());
             currentConditionImageViewIcon.setImage(image);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Change Days TODO text naar een object(bv label),zo komt er een mooie loop
-    public void changeDayGui(ForecastDay forecastDay,int numberOfDay){
+    // Change Today Day 1
+    public void changeTodayDay1(ForecastDay forecastDay) {
+        // Day
+        // Is always "Today"
 
+        // Symbol
+        Symbol symbol = new Symbol();
+        String url = symbol.getWeatherSymbolURL(forecastDay.getDay().getConditionCode());
+        try {
+            File file = new File(url);
+            Image image = new Image(file.toURI().toString());
+            imageViewIcon1.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        // Status condition
+        labelState1.setText(forecastDay.getDay().getConditionText());
+
+        // Max Temperature
+        labelMaxTemperature1.setText(forecastDay.getDay().getMaxTemp_c() + " C°");
+
+        // Min Temperature
+        labelMinTemperature1.setText(forecastDay.getDay().getMinTemp_c() + " C°");
+    }
+
+    // Change Today Day 2
+    public void changeTodayDay2(ForecastDay forecastDay) {
+        // Day
+        // Is always "Today"
+
+        // Symbol
+        Symbol symbol = new Symbol();
+        String url = symbol.getWeatherSymbolURL(forecastDay.getDay().getConditionCode());
+        try {
+            File file = new File(url);
+            Image image = new Image(file.toURI().toString());
+            imageViewIcon2.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Status condition
+        labelState2.setText(forecastDay.getDay().getConditionText());
+
+        // Max Temperature
+        labelMaxTemperature2.setText(forecastDay.getDay().getMaxTemp_c() + " C°");
+
+        // Min Temperature
+        labelMinTemperature2.setText(forecastDay.getDay().getMinTemp_c() + " C°");
+    }
+
+    // Change Today Day 3
+    public void changeTodayDay3(ForecastDay forecastDay) {
+        // Day
+        // Is always "Today"
+
+        // Symbol
+        Symbol symbol = new Symbol();
+        String url = symbol.getWeatherSymbolURL(forecastDay.getDay().getConditionCode());
+        try {
+            File file = new File(url);
+            Image image = new Image(file.toURI().toString());
+            imageViewIcon3.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Status condition
+        labelState3.setText(forecastDay.getDay().getConditionText());
+
+        // Max Temperature
+        labelMaxTemperature3.setText(forecastDay.getDay().getMaxTemp_c() + " C°");
+
+        // Min Temperature
+        labelMinTemperature3.setText(forecastDay.getDay().getMinTemp_c() + " C°");
+    }
+
+    // Change Today Day 4
+    public void changeTodayDay4(ForecastDay forecastDay) {
+        // Day
+        // Is always "Today"
+
+        // Symbol
+        Symbol symbol = new Symbol();
+        String url = symbol.getWeatherSymbolURL(forecastDay.getDay().getConditionCode());
+        try {
+            File file = new File(url);
+            Image image = new Image(file.toURI().toString());
+            imageViewIcon4.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Status condition
+        labelState4.setText(forecastDay.getDay().getConditionText());
+
+        // Max Temperature
+        labelMaxTemperature4.setText(forecastDay.getDay().getMaxTemp_c() + " C°");
+
+        // Min Temperature
+        labelMinTemperature4.setText(forecastDay.getDay().getMinTemp_c() + " C°");
+    }
+
+    // Change Today Day 5
+    public void changeTodayDay5(ForecastDay forecastDay) {
+        // Day
+        // Is always "Today"
+
+        // Symbol
+        Symbol symbol = new Symbol();
+        String url = symbol.getWeatherSymbolURL(forecastDay.getDay().getConditionCode());
+        try {
+            File file = new File(url);
+            Image image = new Image(file.toURI().toString());
+            imageViewIcon5.setImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Status condition
+        labelState5.setText(forecastDay.getDay().getConditionText());
+
+        // Max Temperature
+        labelMaxTemperature5.setText(forecastDay.getDay().getMaxTemp_c() + " C°");
+
+        // Min Temperature
+        labelMinTemperature5.setText(forecastDay.getDay().getMinTemp_c() + " C°");
     }
 
 

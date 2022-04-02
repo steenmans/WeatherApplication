@@ -16,10 +16,6 @@ MainApplication extends Application {
         stage.setTitle("Weather Application");
         stage.setScene(scene);
         stage.show();
-
-
-
-
     }
 
     public static void main(String[] args) {

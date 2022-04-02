@@ -11,18 +11,15 @@ public class Get {
         //Nothing
     }
 
-
-
     /*** Send The Request and return String ***/
-    public String sendRequest(Request request){
+    public String sendRequest(Request request) {
         String response = "";
         try (ResponseBody responseBody = client.newCall(request).execute().body()) {
-             response = responseBody.string();
+            response = responseBody.string();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
     }
-
 
 }
