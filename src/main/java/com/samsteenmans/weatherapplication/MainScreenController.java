@@ -1,6 +1,7 @@
 package com.samsteenmans.weatherapplication;
 
-import com.samsteenmans.weatherapplication.GuiFacility.Symbol;
+import com.samsteenmans.weatherapplication.Utilities.Date;
+import com.samsteenmans.weatherapplication.Utilities.Symbol;
 import com.samsteenmans.weatherapplication.data.CompleteWeatherData;
 import com.samsteenmans.weatherapplication.data.Data;
 import com.samsteenmans.weatherapplication.data.autocomplete.AutoCompleteLocations;
@@ -17,6 +18,8 @@ import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainScreenController {
@@ -128,7 +131,7 @@ public class MainScreenController {
     @FXML // fx:id="labelMinTemperature5"
     private Label labelMinTemperature5; // Value injected by FXMLLoader
 
-    @FXML // fx:id="areaChart"
+    @FXML // fx:id="areaChart" TODO Make the areaChart
     private AreaChart<?, ?> areaChart; // Value injected by FXMLLoader
 
 
@@ -136,9 +139,10 @@ public class MainScreenController {
     // *** Initialize ***
     // *** --------- ***/
     public void initialize() {
+
+
         // Variables
         Data data = new Data();
-
 
         // Add a listener to the Search textField for giving autocomplete
         textFieldSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -238,7 +242,7 @@ public class MainScreenController {
     // Change Today Day 2
     public void changeTodayDay2(ForecastDay forecastDay) {
         // Day
-        // Is always "Today"
+        labelDay2.setText(Date.getDayStringNew(LocalDate.parse(forecastDay.getDate())));
 
         // Symbol
         Symbol symbol = new Symbol();
@@ -264,7 +268,7 @@ public class MainScreenController {
     // Change Today Day 3
     public void changeTodayDay3(ForecastDay forecastDay) {
         // Day
-        // Is always "Today"
+        labelDay3.setText(Date.getDayStringNew(LocalDate.parse(forecastDay.getDate())));
 
         // Symbol
         Symbol symbol = new Symbol();
@@ -290,7 +294,7 @@ public class MainScreenController {
     // Change Today Day 4
     public void changeTodayDay4(ForecastDay forecastDay) {
         // Day
-        // Is always "Today"
+        labelDay4.setText(Date.getDayStringNew(LocalDate.parse(forecastDay.getDate())));
 
         // Symbol
         Symbol symbol = new Symbol();
@@ -316,7 +320,7 @@ public class MainScreenController {
     // Change Today Day 5
     public void changeTodayDay5(ForecastDay forecastDay) {
         // Day
-        // Is always "Today"
+        labelDay5.setText(Date.getDayStringNew(LocalDate.parse(forecastDay.getDate())));
 
         // Symbol
         Symbol symbol = new Symbol();

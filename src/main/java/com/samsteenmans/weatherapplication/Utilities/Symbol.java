@@ -1,4 +1,4 @@
-package com.samsteenmans.weatherapplication.GuiFacility;
+package com.samsteenmans.weatherapplication.Utilities;
 
 public class Symbol {
 

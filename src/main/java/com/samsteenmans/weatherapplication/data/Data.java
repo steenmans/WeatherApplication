@@ -23,7 +23,6 @@ public class Data {
     This class is to get al the data control from 1 simple place
      */
 
-    // TODO check the http code , 200 is valid
     // Get all the weather Data of the chosen days, return as CompleteWeatherData
     public CompleteWeatherData getCompleteWeatherData(String cityName, int numberOfDays) {
         /*** Variables ***/
@@ -187,7 +186,6 @@ public class Data {
         return completeWeatherData;
     }
 
-    // TODO check the http code, 200 is valid
     // Get the autocomplete data, return as a String[]
     public List<AutoCompleteLocations> getAutocomplete(String cityName) {
         /*** Variables ***/
